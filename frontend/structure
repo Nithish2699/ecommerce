@@ -1,0 +1,17 @@
+ecommerce-frontend/
+├── public/
+│   └── index.html
+├── src/
+│   ├── components/
+│   │   ├── Navbar.js
+│   │   ├── ProductCard.js
+│   │   └── Cart.js
+│   ├── pages/
+│   │   ├── Login.js
+│   │   ├── Register.js
+│   │   └── Home.js
+│   ├── App.js
+│   ├── index.js
+│   └── api.js
+├── package.json
+└── .env
