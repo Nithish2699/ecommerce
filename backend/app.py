@@ -1,29 +1,35 @@
-from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
-from flask_jwt_extended import JWTManager
-from config import Config
+from flask import Flask, jsonify, request
+from flask_cors import CORS
 
-db = SQLAlchemy()
-jwt = JWTManager()
+app = Flask(__name__)
+CORS(app)
 
-def create_app():
-    app = Flask(__name__)
-    app.config.from_object(Config)
+# Sample product data
+products = [
+    {"id": 1, "name": "Red Shirt", "description": "Comfortable cotton shirt", "price": 499, "image": "https://via.placeholder.com/300x200"},
+    {"id": 2, "name": "Blue Jeans", "description": "Stylish denim jeans", "price": 899, "image": "https://via.placeholder.com/300x200"},
+    {"id": 3, "name": "Sneakers", "description": "Sporty and durable", "price": 1299, "image": "https://via.placeholder.com/300x200"}
+]
 
-    db.init_app(app)
-    jwt.init_app(app)
+# Get all products
+@app.route("/api/products", methods=["GET"])
+def get_products():
+    return jsonify(products)
 
-    from routes.auth import auth_bp
-    from routes.products import product_bp
-    from routes.orders import order_bp
+# Get product by ID
+@app.route("/api/products/<int:product_id>", methods=["GET"])
+def get_product(product_id):
+    product = next((p for p in products if p["id"] == product_id), None)
+    if product:
+        return jsonify(product)
+    return jsonify({"error": "Product not found"}), 404
 
-    app.register_blueprint(auth_bp)
-    app.register_blueprint(product_bp)
-    app.register_blueprint(order_bp)
-
-    return app
-
-app = create_app()
+# Placeholder for checkout (future enhancement)
+@app.route("/api/checkout", methods=["POST"])
+def checkout():
+    data = request.get_json()
+    print("Order received:", data)
+    return jsonify({"message": "Order placed successfully!"})
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, host="0.0.0.0")

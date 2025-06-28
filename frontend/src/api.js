@@ -1,13 +1,14 @@
-import axios from 'axios';
+const API_BASE = process.env.REACT_APP_BACKEND_URL;
 
-const API = axios.create({
-  baseURL: process.env.REACT_APP_API_URL,
-});
+export async function getProducts() {
+  const res = await fetch(`${API_BASE}/products`);
+  return res.json();
+}
 
-API.interceptors.request.use((req) => {
-  const token = localStorage.getItem('token');
-  if (token) req.headers.Authorization = `Bearer ${token}`;
-  return req;
-});
-
-export default API;
+export async function addToCart(productId) {
+  return fetch(`${API_BASE}/cart`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ product_id: productId })
+  });
+}

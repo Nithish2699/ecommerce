@@ -1,17 +1,13 @@
-# Stage 1: Build React app
-FROM node:18-alpine as build
+# Stage 1: Build React App
+FROM node:18 AS builder
 WORKDIR /app
 COPY package*.json ./
 RUN npm install
 COPY . .
 RUN npm run build
 
-# Stage 2: Serve with Nginx on port 8080 (for Cloud Run compatibility)
+# Stage 2: Serve with nginx
 FROM nginx:stable-alpine
-COPY --from=build /app/build /usr/share/nginx/html
-
-# Set Nginx to listen on 8080
-RUN sed -i 's/80;/8080;/g' /etc/nginx/conf.d/default.conf
-
-EXPOSE 8080
+COPY --from=builder /app/build /usr/share/nginx/html
+EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
