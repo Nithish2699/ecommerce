@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: gcr.io/mydevops-training-464107/ecommerce-backend
+          image: gcr.io/your-project-id/ecommerce-backend
           ports:
             - containerPort: 5000
           resources:
