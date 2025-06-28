@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: gcr.io/mydevops-training-464107/ecommerce-frontend
+        image: gcr.io/Your-project-id/ecommerce-frontend
         ports:
         - containerPort: 80
 ---
